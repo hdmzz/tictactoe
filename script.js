@@ -3,6 +3,7 @@ const board = document.getElementById('board');
 const xClass = 'x';
 const circleClass = 'circle';
 const winningMessageTextElement = document.querySelector('[data-winning-message-text]')
+const restartButton = document.getElementById('restart')
 const winningCombinations = [
     [0, 1, 2],
     [0, 3, 6],
@@ -16,14 +17,20 @@ const winningCombinations = [
 const winningMessageElement = document.getElementById('winningMessage')
 let circleTurn
 
+restartButton.addEventListener('click', startGame)
+
 startGame()
 
 function startGame() {
     circleTurn = false
     cellElements.forEach(cell => {
+        cell.classList.remove(xClass)
+        cell.classList.remove(circleClass)
+        cell.removeEventListener('click', handleClick)
         cell.addEventListener('click', handleClick, {once: true})
     });
     setBoardHoverClass()
+    winningMessageElement.classList.remove('show')
 }
 
 function handleClick(e) {
@@ -42,9 +49,9 @@ function handleClick(e) {
 
 function endGame(draw) {
     if (draw) {
-        winningMessageElement.innerText = 'Draw!'
+        winningMessageTextElement.innerText = 'Draw!'
     } else {
-        winningMessageTextElement.innerHTML = `${circleTurn ? 'O' : 'X'} gagne!`
+        winningMessageTextElement.innerText = `${circleTurn ? 'O' : 'X'} gagne!`
     }
     winningMessageElement.classList.add('show')
 }
